@@ -1,0 +1,52 @@
+# Build artifacts
+*.iso
+*.qcow2
+*.deb
+build_temp/
+debian-build/
+
+# Attestations and signatures
+attestations/
+scripts/attestations/
+*.json
+*.sig
+
+# Keys and certificates
+keys/
+scripts/keys/
+
+# Logs
+*.log
+/tmp/wget-log.txt
+/tmp/dd-log.txt
+/tmp/void-flasher-full.log
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Temporary files
+/tmp/TinyCorePure64-*.iso
+/tmp/alpine-standard-*.iso
+*.tmp
+
+# Compiled binaries (if any are built locally)
+sentinel-gui
+void-flasher
+
+# Core dumps
+core
+core.*
+
+# Backup files
+*.bak
+*.backup
+*.orig
+
+# Docker related
+.dockerignore
+

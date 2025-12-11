@@ -1,0 +1,8 @@
+Package: void-flasher
+Version: 1.0.0
+Architecture: all
+Maintainer: Your Name <you@example.com>
+Depends: bash, coreutils, wget, zenity, util-linux, udisks2, sudo, dbus-x11
+Description: Void ISO Flasher
+ Installs a simple graphical tool to download the Void ISO
+ and flash it to a USB drive.

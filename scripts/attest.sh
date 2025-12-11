@@ -107,8 +107,6 @@ cat > "$ATTEST_JSON" <<EOF
   "logfile": "$LOGFILE"
 }
 EOF
-
-# ensure key exists
 mkdir -p keys
 if [ ! -f keys/commander_key.pem ]; then
   echo "[*] generating demo RSA key at keys/commander_key.pem"
@@ -119,14 +117,11 @@ fi
 SIG_FILE="${ATTEST_JSON}.sig"
 openssl dgst -sha256 -sign keys/commander_key.pem -out "$SIG_FILE" "$ATTEST_JSON"
 
-# DEST: prefer a removable, writable mountpoint (first found), fallback to CWD/attestations
 find_removable_mount() {
-  # iterate mounted block devices, check /sys/block/<dev>/removable
   while read -r src tgt rest; do
     devbase="$(basename "$src" | sed 's/[0-9]*$//')"
     if [ -e "/sys/block/$devbase/removable" ]; then
       if [ "$(cat /sys/block/$devbase/removable 2>/dev/null || echo 0)" = "1" ]; then
-        # prefer mounts under /media /run/media /mnt
         echo "$tgt"
         return 0
       fi
@@ -146,12 +141,10 @@ fi
 mkdir -p "$DEST_DIR"
 OUT_BASE="$DEST_DIR/attest-$(basename "$DEV")-$(date +%Y%m%dT%H%M%SZ)"
 
-# copy and set safe perms, ensure owner is human
 cp "$ATTEST_JSON" "${OUT_BASE}.json"
 cp "$SIG_FILE" "${OUT_BASE}.sig"
 cp keys/commander_pub.pem "${OUT_BASE}.pub.pem"
 
-# chown to invoking user so files are not root-only
 if command -v chown >/dev/null 2>&1; then
   sudo -n true 2>/dev/null || true
   chown "${OWNER}:${GROUP}" "${OUT_BASE}.json" "${OUT_BASE}.sig" "${OUT_BASE}.pub.pem" 2>/dev/null || true
