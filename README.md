@@ -6,12 +6,13 @@
 ---
 
 ##  Overview
+Void is an open-source, cross-platform data wiping system focused on verifiable and standards-compliant data erasure across a wide range of storage devices.
 
-**Void** is a secure, cross-platform data wiping solution designed to **permanently erase user data** from storage devices including **HDDs, SSDs, NVMe drives, USB devices, and Android phones**.
+It supports HDDs, SSDs, NVMe drives, removable USB storage, and Android devices, and is designed to perform complete, irreversible data destruction, not just filesystem-level deletion.
 
-Built on a **Tiny Core Linux (64-bit)** base, Void ensures **speed, portability, and compatibility** even on older hardware.
+Void runs on a 64-bit Tiny Core Linux base to keep the environment minimal, fast, and hardware-tolerant, making it usable on both modern systems and older machines without relying on vendor-specific tooling.
 
-It complies with **NIST SP 800-88** standards and generates **tamper-proof, verifiable wipe certificates**, promoting **safe recycling** and supporting **India’s circular economy initiatives**.
+The project follows NIST SP 800-88 data sanitization guidelines and produces cryptographically verifiable wipe records that can be audited or validated later. These records support reproducible erasure workflows, compliance verification, and responsible device reuse or disposal.
 
 ---
 
@@ -53,7 +54,7 @@ It complies with **NIST SP 800-88** standards and generates **tamper-proof, veri
 
 - **Boot selection:** Choose the downloaded `Void.iso`
 
-- **Partition scheme:** Choose `MBR` (Legacy BIOS) or `GPT` (UEFI)
+- **Partition scheme:** Choose `MBR` (Legacy BIOS) or `GPT` (UEFI) based on your device.
 
 4. Click **Start** and wait for Rufus to finish creating the bootable USB.
 
@@ -76,8 +77,7 @@ Once the Void interface loads, select an option:
 -  **Wipe Android Devices**
 
 Follow the on-screen prompts.
-
-After completion, Void automatically generates a **wipe certificate**.
+After completion, Void automatically generates a **wipe certificate** which will be stored on the Pendrive.
 
 ---
 
@@ -94,102 +94,50 @@ After completion, Void automatically generates a **wipe certificate**.
 ```bash
 
 sudo dd if=Void.iso of=/dev/sdX bs=4M status=progress conv=fsync
+```
 
- Replace /dev/sdX with your actual USB device path (not a partition like /dev/sdb1).
-
-
-
+Replace /dev/sdX with your actual USB device path (not a partition like /dev/sdb1).
 Reboot your system and select the USB device from the boot menu.
 
+---
 
-
-Option 2 — Using the .deb Package
-
-
+### Option 2 — Using the .deb Package
 
 Download the void.deb package from the official website.
-
-
-
 Install it using:
 
-
-
+```bash
 sudo dpkg -i void.deb
-
 sudo apt-get install -f
-
-
-
-
+```
 
 Launch Void with:
 
-
-
+```bash
 void
-
-
-
-
+```
 
 Follow the interface to securely wipe supported devices.
 
- Wipe Certificates
+### For Android devices:
+
+- Enable USB Debugging in Developer Options before connecting.
+- Ensure the phone is properly recognized by ADB.
 
 
+### Wipe Certificates
 
 After each successful operation, Void creates a digital wipe certificate that includes:
-
-
-
-Device name and serial number
-
-
-
-Wipe timestamp
-
-
-
-Wipe method (ATA, NVMe, ADB, or dd)
-
-
-
-Verification checksum
-
-
-
-Operator ID (if configured)
-
-
+- Device name and serial number
+- Wipe timestamp
+- Wipe method (ATA, NVMe, ADB, or dd)
+- Verification checksum
+- Operator ID (if configured)
 
 These certificates act as tamper-proof audit records, providing verifiable proof of data erasure for organizations and compliance audits.
 
+### !!! Important Notes
 
-
- Important Notes
-
-
-
- All data will be permanently erased. Back up any critical data before proceeding.
-
-
-
-Use Void only on devices you own or are authorized to wipe.
-
-
-
-For Android devices:
-
-
-
-Enable USB Debugging in Developer Options before connecting.
-
-
-
-Ensure the phone is properly recognized by ADB.
-
-
-
-Some older HDDs may not support ATA Secure Erase commands.
-```
+ - All data will be permanently erased. Back up any critical data before proceeding. 
+ - Use Void only on devices you own or are authorized to wipe.
+ - Some older HDDs may not support ATA Secure Erase commands.
